@@ -16,7 +16,7 @@ timezone: Africa/Cairo
 
 title: Nemo's SecBlog # the main title
 
-tagline: Makes Code Go Backwards  # it will display as the subtitle
+tagline: I make Code Go Backwards  # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   Mohamed ELansari's blog, a place to share my thoughts and ideas about technology, programming, and secuirty also CTF Writeups.
