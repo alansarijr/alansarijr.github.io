@@ -2,20 +2,30 @@
 layout: post
 title: m0leCon 2026 CTF - Login_System Writeup
 categories: [general]
-tags: [general]
+tags: [general,m0leCon 2026 CTF]
 ---
-m0leCon 2026 CTF - Login_System Writeup
-Category: Reverse Engineering / Cryptography
-Difficulty: Hard
-Objective: Reverse engineer a custom database authentication system, identify hidden administrative accounts, and crack the password to login and get the flag.
-1. Reconnaissance & File Analysis
+**m0leCon 2026 CTF - Login_System Writeup**
+
+**Category:** Reverse Engineering / Cryptography
+
+**Difficulty:** Hard
+
+**Objective:** Reverse engineer a custom database authentication system, identify hidden administrative accounts, and crack the password to login and get the flag.
+
+# 1. Reconnaissance & File Analysis
 The challenge provided two files:
-login: A 64-bit ELF binary executable.
-db.dat: A binary database file containing user credentials.
+
+- login: A 64-bit ELF binary executable.
+
+- db.dat: A binary database file containing user credentials.
 
 I started by opening the binary in Ghidra to decompile the key functions: check (login), reg (register), and custom_hash.
-A. Analyzing check (The Login Function)
+
+## A. Analyzing check (The Login Function)
+
 The login function reads the db.dat file in chunks to validate credentials.
+
+```cpp
 undefined8 check(char *input_username, undefined8 input_password, undefined8 *output_struct) {
   FILE *__stream;
   undefined8 local_38; // Buffer for reading file
@@ -40,13 +50,19 @@ undefined8 check(char *input_username, undefined8 input_password, undefined8 *ou
   }
   return uVar2; // Returns 1 if successful
 }
-Key Finding: The database (db.dat) structure is fixed at 29 bytes per record:
-Bytes 0–19: Username (Null-terminated string).
-Bytes 20–27: Password Hash (8 bytes).
-Byte 28: Unknown/Padding (at this stage).
+```
 
-B. Analyzing reg (The Registration Function)
+**Key Finding:** The database (db.dat) structure is fixed at 29 bytes per record:
+
+- Bytes 0–19: Username (Null-terminated string).
+- Bytes 20–27: Password Hash (8 bytes).
+- Byte 28: Unknown/Padding (at this stage).
+
+## B. Analyzing reg (The Registration Function)
+
 To understand the mysterious 29th byte, I analyzed the registration function.
+
+```cpp
 void reg(void) {
   // ... inputs ...
   custom_hash(local_28, local_34); // Hash password
@@ -59,9 +75,15 @@ void reg(void) {
   printf("\nRegistration complete for user %s.\n", local_48);
   puts("All new users receive privilege level 0x00.");
 }
-Key Finding: The 29th byte is the Privilege Level. Regular users have 0x00. This implies that an Administrator would have a non-zero value (likely 0x01).
-C. Analyzing custom_hash (The Crypto)
+```
+
+** Key Finding: ** The 29th byte is the Privilege Level. Regular users have 0x00. This implies that an Administrator would have a non-zero value (likely 0x01).
+
+## C. Analyzing custom_hash (The Crypto)
+
 The binary uses a custom hashing algorithm instead of a standard one like SHA-256.
+
+```cpp
 void custom_hash(char *password, void *output_buffer) {
   size_t pass_len;
   byte hash;
@@ -85,11 +107,15 @@ void custom_hash(char *password, void *output_buffer) {
     }
   }
 }
-2. Vulnerability & Exploitation
-Step 1: Finding the Admin
+```
+
+# 2. Vulnerability & Exploitation
+## Step 1: Finding the Admin
+
 I wrote a Python script to parse db.dat and look for any user where Byte 28 != 0.
 import os
 
+```python
 def find_admin(filename="db.dat"):
     """
     Scans a binary database file for users with non-zero privilege levels.
@@ -152,10 +178,19 @@ def find_admin(filename="db.dat"):
 
 if __name__ == "__main__":
     find_admin()
-Result: Found hidden admin user_2135 with hash 1028376b728691a9.
-Step 2: Cracking the Hash (Z3 Solver)
+```
+
+![Getting Admin](https://cdn-images-1.medium.com/max/800/1*iNVPCevCEhM5dCY2nqe-LA.png)
+
+**Result:** Found hidden admin `user_2135` with hash `1028376b728691a9`.
+
+# Step 2: Cracking the Hash (Z3 Solver)
+
 Since the hash function relies on basic math (XOR/ADD) and the password length is limited to 19 chars, I used Z3 to reverse it mathematically.
-# Z3 Solver Script
+
+## Z3 Solver Script
+
+```python
 from z3 import *
 
 target_hex = "1028376b728691a9"
@@ -183,7 +218,14 @@ for i in range(8): s.add(buf[i] == target_bytes[i])
 
 if s.check() == sat:
     print(s.model())
-Result: Password is 3wDVn.
-Step 3: Login and get the Flag
-3. Final Flag
-ptm{Th15_L0g1n_Sy5tem_15_S0_B4d}
+
+```
+
+**Result:** Password is `3wDVn`.
+
+## Step 3: Login and get the Flag
+
+![Getting Admin](https://cdn-images-1.medium.com/max/800/0*BqnRCLHJ11w3kUre)
+
+# 3. Final Flag
+`ptm{Th15_L0g1n_Sy5tem_15_S0_B4d}`
