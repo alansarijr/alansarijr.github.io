@@ -1,10 +1,14 @@
 ---
 layout: post
-title: OverTheWire Bandit — Full Walkthrough Series
+title: "OverTheWire Bandit — Full Walkthrough Series"
 description: A complete beginner-friendly walkthrough series for the OverTheWire Bandit wargame, covering all 34 levels.
 categories: [Walkthroughs, OverTheWire]
 tags: [OTW, Bandit, Linux, beginner]
 ---
+
+> **Bandit Series** — This is the **intro post** for the full walkthrough series.
+> Jump directly to a level: [Level 0](/posts/overthewire-bandit-level-0-ssh-basics/) • [Level 1](/posts/overthewire-bandit-level-1-reading-files/)
+{: .prompt-tip }
 
 # Introduction  
 OverTheWire is a great free platform where you can learn and practice cybersecurity by playing wargames. Each game focuses on a different area of security, and the one most people start with is called Bandit. It’s perfect for beginners because it teaches the basic skills needed for the other challenges—mainly Linux commands and a bit of Git.
