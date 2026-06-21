@@ -1,8 +1,9 @@
 ---
 layout: post
-title: OverTheWire Bandit FULL Walkthrough
-categories: [OTW Bandit]
-tags: [OTW, Bandit]
+title: OverTheWire Bandit — Full Walkthrough Series
+description: A complete beginner-friendly walkthrough series for the OverTheWire Bandit wargame, covering all 34 levels.
+categories: [Walkthroughs, OverTheWire]
+tags: [OTW, Bandit, Linux, beginner]
 ---
 
 # Introduction  

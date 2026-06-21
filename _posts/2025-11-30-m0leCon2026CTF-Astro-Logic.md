@@ -1,8 +1,9 @@
 ---
 layout: post
-title: m0leCon 2026 CTF - Astro-Logic Writeup
-categories: [general]
-tags: [general,m0leCon 2026 CTF]
+title: "m0leCon 2026 CTF - Astro-Logic Writeup"
+description: A deep-dive RE writeup for Astro-Logic from m0leCon 2026 CTF, covering logic inversion, CRC32 brute-forcing, and GDB heap inspection.
+categories: [CTF Writeups, m0leCon 2026]
+tags: [CTF, Reverse Engineering, GDB, Ghidra, CRC32, brute-force]
 ---
 **m0leCon 2026 CTF - Login_System Writeup**
 

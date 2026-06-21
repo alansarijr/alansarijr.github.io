@@ -1,8 +1,9 @@
 ---
 layout: post
-title: m0leCon 2026 CTF - Login_System Writeup
-categories: [general]
-tags: [general,m0leCon 2026 CTF]
+title: "m0leCon 2026 CTF - Login_System Writeup"
+description: Reverse engineering a custom binary authentication system, parsing a binary database, and cracking a custom hash with Z3 to get the flag.
+categories: [CTF Writeups, m0leCon 2026]
+tags: [CTF, Reverse Engineering, Ghidra, Python, Z3, cryptography]
 ---
 **m0leCon 2026 CTF - Login_System Writeup**
 
